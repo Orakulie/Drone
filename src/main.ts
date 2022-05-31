@@ -44,7 +44,7 @@ function setup_world() {
 		new Boundary(globals.canvas.width + 10, globals.canvas.height / 2, 20, globals.canvas.height),
 	];
 
-	evolution = new Evolution(300);
+	evolution = new Evolution(100);
 
 	globals.mouse = Matter.Mouse.create(globals.canvas);
 	globals.canvas.onmousedown = (evt) => {

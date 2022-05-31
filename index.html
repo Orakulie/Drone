@@ -6,7 +6,7 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Drone</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='styles.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href='styles2.css'>
 </head>
 
 <body>
@@ -15,13 +15,6 @@
             <div class="general">
                 <span id="generation_span">Generation: 1</span>
                 <hr class="solid">
-                <!-- <div class="element_wrapper">
-                    <span>Mutation probability</span>
-                    <div>
-                        <label id="probability_label">0.1</label>
-                        <input id="probability_slider" type="range" min="0" max="1" value="0.1" step="0.02">
-                    </div>
-                </div> -->
                 <div class="element_wrapper">
                     <span>Speed</span>
                     <div>
@@ -32,19 +25,19 @@
                 <button id="toggle_display">Show Best</button>
             </div>
 
-            <div class="drone_info_wrapper">
+            <!-- <div class="drone_info_wrapper">
                 <canvas id="info_canvas" width="200" height="250"></canvas>
-            </div>
+            </div> -->
 
         </div>
-        <canvas id="canvas" width="1700" height="1000"></canvas>
+        <canvas id="main_canvas" width="1700" height="1000"></canvas>
         <div class="chart_canvas_wrapper">
             <canvas id="chart_canvas" width="100" height="100"></canvas>
         </div>
     </div>
     <!--  <script type="module" src='./dist/main.js'></script>
     <script type="module" src='./dist/drone.js'></script> -->
-    <script src="./dist/bundle.js"></script>
+    <!-- <script src="./dist/bundle.js"></script> -->
 </body>
 
 </html>
