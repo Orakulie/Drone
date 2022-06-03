@@ -6,38 +6,87 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Drone</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='styles2.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href='styles.css'>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 
 <body>
     <div class="wrapper">
+        <div class="canvas-wrapper">
+            <canvas id="main-canvas"></canvas>
+            <div class="absolute-ui">
+                <div class="content">
+                    <!-- <div class="show-option-wrapper">
+                        <label for="show-option">Show</label>
+                        <select id="show-option">
+                            <option value="best">best</option>
+                            <option value="all">all</option>
+                            <option value="highlighted">highlighted</option>
+                        </select>
+                    </div> -->
+                    <!-- <button class="icon-button"><span class="material-icons">play_arrow</span></button> -->
+                    <button class="menu-button">Show all</button>
+                    <button class="menu-button">Play</button>
+                    <button class="menu-button">Mouse Mode</button>
+                    <button class="menu-button">Export</button>
+                    <button class="menu-button">Load</button>
+                </div>
+                <button class="icon-button"><span class="material-icons">expand_more</span></button>
+            </div>
+        </div>
         <div class="ui">
             <div class="general">
-                <span id="generation_span">Generation: 1</span>
+                <span class="title">Options</span>
                 <hr class="solid">
-                <div class="element_wrapper">
+                <div class="element-wrapper">
                     <span>Speed</span>
-                    <div>
-                        <label id="time_label">1</label>
-                        <input id="time_slider" type="range" min="0" max="10" value="1" step="0.25">
+                    <div class="slider-wrapper">
+                        <input id="time-slider" type="range" min="1" max="10" value="1" step="1">
+                        <label id="time-label">1</label>
                     </div>
                 </div>
-                <button id="toggle_display">Show Best</button>
-            </div>
+                <div class="element-wrapper">
+                    <span>Drone count</span>
+                    <div class="slider-wrapper">
+                        <input id="count-slider" type="range" min="1" max="1000" value="200" step="1">
+                        <label id="count-label">200</label>
+                    </div>
+                </div>
+                <div class="element-wrapper">
+                    <span>Speed reward</span>
+                    <div class="slider-wrapper">
+                        <input id="reward-slider" type="range" min="1" max="10" value="1" step="1">
+                        <label id="reward-label">1</label>
+                    </div>
+                </div>
 
+                <hr class="solid">
+                <span class="title">Info</span>
+                <hr class="solid">
+                <div class="info-wrapper">
+                    <span>Generation:</span>
+                    <span id="generation-span">1</span>
+                </div>
+                <div class="info-wrapper">
+                    <span>Best score:</span>
+                    <span id="best-score-span">-</span>
+                </div>
+            </div>
             <!-- <div class="drone_info_wrapper">
                 <canvas id="info_canvas" width="200" height="250"></canvas>
             </div> -->
+            <div class="canvas-wrapper">
+                <canvas id="chart-canvas">
+            </div>
 
+            <!-- <div class="chart_canvas_wrapper"> -->
         </div>
-        <canvas id="main_canvas" width="1700" height="1000"></canvas>
-        <div class="chart_canvas_wrapper">
-            <canvas id="chart_canvas" width="100" height="100"></canvas>
-        </div>
+        <!-- </div> -->
     </div>
     <!--  <script type="module" src='./dist/main.js'></script>
     <script type="module" src='./dist/drone.js'></script> -->
-    <!-- <script src="./dist/bundle.js"></script> -->
+
+    <script src="./dist/bundle.js"></script>
 </body>
 
 </html>
