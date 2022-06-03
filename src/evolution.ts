@@ -102,7 +102,7 @@ export class Evolution {
 		this.generations.push(new Generation(this.generation_count, generation_fitness, this.drones[0].copy()));
 
 		// update chart
-		// UI.draw_chart(this.generations);
+		UI.update_chart(this.generations);
 
 		// dispose all old drones
 		this.drones.forEach((drone) => {
@@ -112,7 +112,7 @@ export class Evolution {
 		// set new drones
 		this.drones = new_drones;
 		this.generation_count++;
-		// UI.update_generation(this.generation_count);
+		UI.generation = this.generation_count;
 	}
 
 	/**

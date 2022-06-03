@@ -96,20 +96,20 @@ export class Neural_Network {
 		return tf.tidy(() => {
 			const weights_a = this.model.getWeights();
 			const weights_b = model.getWeights();
-			const weights = [];
-			for (let i = 0; i < weights_a.length; i++) {
-				let tens = weights_a[i];
-				let tens2 = weights_b[i];
-				let shape = weights_a[i].shape;
-				let values = tens.dataSync().slice();
-				let values2 = tens2.dataSync().slice();
-				if (Math.random() < 0.5) {
-					values = values2;
-				}
-				let newTens = tf.tensor(values, shape);
-				weights[i] = newTens;
-			}
-			// const weights = Math.random() < 0.5 ? weights_a : weights_b;
+			// const weights = [];
+			// for (let i = 0; i < weights_a.length; i++) {
+			// 	let tens = weights_a[i];
+			// 	let tens2 = weights_b[i];
+			// 	let shape = weights_a[i].shape;
+			// 	let values = tens.dataSync().slice();
+			// 	let values2 = tens2.dataSync().slice();
+			// 	if (Math.random() < 0.5) {
+			// 		values = values2;
+			// 	}
+			// 	let newTens = tf.tensor(values, shape);
+			// 	weights[i] = newTens;
+			// }
+			const weights = Math.random() < 0.5 ? weights_a : weights_b;
 			const new_model = Neural_Network.create_network();
 			new_model.setWeights(weights);
 			return new Neural_Network(new_model) as unknown as any;

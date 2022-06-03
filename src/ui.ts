@@ -1,3 +1,6 @@
+import { Chart, ChartData } from "chart.js";
+import { Generation } from "./evolution";
+
 class UI_Manager {
 	// --- canvas ---
 	main_canvas = document.getElementById("main-canvas")! as HTMLCanvasElement;
@@ -22,6 +25,7 @@ class UI_Manager {
 	// -- info ---
 	private generation_span = document.getElementById("generation-span")! as HTMLSpanElement;
 	private best_score_span = document.getElementById("best-score-span")! as HTMLSpanElement;
+	private chart!: Chart;
 
 	constructor() {
 		window.onresize = this.resize_fix.bind(this);
@@ -90,9 +94,50 @@ class UI_Manager {
 		return +this.speed_reward_slider.value;
 	}
 
+	/**
+	 * Clears the canvas
+	 * @param ctx canvas rendering context 2d
+	 */
 	clear_canvas(ctx: CanvasRenderingContext2D) {
 		this.main_ctx.fillStyle = "#161616";
 		this.main_ctx.fillRect(0, 0, this.main_canvas.width, this.main_canvas.height);
+	}
+
+	update_chart(generations: Generation[]) {
+		if (!this.chart) {
+			this.init_chart(generations);
+			return;
+		}
+
+		const last_generation = generations[generations.length - 1];
+		this.chart.data.labels?.push(last_generation.id);
+		this.chart.data.datasets[0].data.push(last_generation.fitness);
+		this.chart.data.datasets[1].data.push(last_generation.best_drone.score);
+		this.chart.update();
+	}
+
+	init_chart(generations: Generation[]) {
+		const labels = generations.map((g) => g.id);
+		const data: ChartData = {
+			labels: labels,
+			datasets: [
+				{
+					label: "Average",
+					data: generations.map((g) => g.fitness),
+					borderColor: "#999",
+				},
+				{
+					label: "Best",
+					data: generations.map((g) => g.best_drone.score),
+					borderColor: "crimson",
+				},
+			],
+		};
+		this.chart = new Chart(this.chart_ctx, {
+			type: "line",
+			data: data,
+			options: { responsive: true, maintainAspectRatio: false },
+		});
 	}
 }
 
