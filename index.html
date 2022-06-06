@@ -25,11 +25,11 @@
                         </select>
                     </div> -->
                     <!-- <button class="icon-button"><span class="material-icons">play_arrow</span></button> -->
-                    <button class="menu-button">Show all</button>
-                    <button class="menu-button">Play</button>
-                    <button class="menu-button">Mouse Mode</button>
-                    <button class="menu-button">Export</button>
-                    <button class="menu-button">Load</button>
+                    <button class="menu-button" id="state-button">Show all</button>
+                    <button class="menu-button" id="stop-button">Stop</button>
+                    <button class="menu-button">Mouse</button>
+                    <!-- <button class="menu-button">Export</button>
+                    <button class="menu-button">Load</button> -->
                 </div>
                 <button class="icon-button"><span class="material-icons">expand_more</span></button>
             </div>
@@ -48,7 +48,7 @@
                 <div class="element-wrapper">
                     <span>Drone count</span>
                     <div class="slider-wrapper">
-                        <input id="count-slider" type="range" min="1" max="1000" value="200" step="1">
+                        <input id="count-slider" type="range" min="1" max="1000" value="300" step="1">
                         <label id="count-label">200</label>
                     </div>
                 </div>
@@ -70,6 +70,10 @@
                 <div class="info-wrapper">
                     <span>Best score:</span>
                     <span id="best-score-span">-</span>
+                </div>
+                <div class="info-button-wrapper">
+                    <button class="info-button">Save</button>
+                    <button class="info-button">Load</button>
                 </div>
             </div>
             <!-- <div class="drone_info_wrapper">

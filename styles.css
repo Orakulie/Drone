@@ -98,6 +98,22 @@ canvas{
     background: none;
     border-color: #161616;
     text-transform: uppercase;
+    min-width: 95px;
+    cursor: pointer;
+}
+
+.info-button-wrapper{
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    gap: 2px;
+}
+.info-button{
+    padding: 5px;
+    background: none;
+    border-color: #999;
+    color: white;
+    cursor: pointer;
 }
 
 .slider-wrapper{

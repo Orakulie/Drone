@@ -20,9 +20,9 @@ export class Drone {
 	// drone targets
 	percentage_targets = [
 		Vector.create(0.5, 0.5),
-		Vector.create(0.2, 0.8),
-		Vector.create(0.2, 0.2),
-		Vector.create(0.8, 0.2),
+		Vector.create(0.3, 0.7),
+		Vector.create(0.4, 0.6),
+		Vector.create(0.6, 0.3),
 		Vector.create(0.1, 0.9),
 		Vector.create(0.5, 0.5),
 	];
@@ -47,7 +47,7 @@ export class Drone {
 		// create main_body of drone
 		this.main_body = Bodies.rectangle(
 			Math.round(UI.main_canvas.width / 2),
-			Math.round(UI.main_canvas.height) - 200,
+			Math.round(UI.main_canvas.height) - 400,
 			this.size,
 			this.size
 		);
@@ -76,7 +76,9 @@ export class Drone {
 		this.target_arrived_total = 0;
 
 		this.percentage_targets.forEach((target) => {
-			this.targets.push(Vector.create(UI.main_canvas.width * target.x, UI.main_canvas.height * target.y));
+			this.targets.push(
+				Vector.create(Math.floor(UI.main_canvas.width * target.x), Math.floor(UI.main_canvas.height * target.y))
+			);
 		});
 
 		// create a new brain if the drone is not a child
@@ -91,8 +93,10 @@ export class Drone {
 		// draws main body
 		draw_body(UI.main_ctx, this.main_body);
 		// draws current_target
-		UI.main_ctx.fillStyle = "red";
-		UI.main_ctx.fillRect(this.targets[this.current_target].x, this.targets[this.current_target].y, 10, 10);
+		if (!this.is_destroyed) {
+			UI.main_ctx.fillStyle = "red";
+			UI.main_ctx.fillRect(this.targets[this.current_target].x, this.targets[this.current_target].y, 10, 10);
+		}
 		// draws thrusters
 		this.thrusters.forEach((thruster) => thruster.draw());
 	}
@@ -122,7 +126,7 @@ export class Drone {
 			if (this.target_arrived == 100) {
 				// add weighted score based on the time it took to reach the target
 				// TODO SPEED WEIGHT
-				this.score += (this.max_duration - this.timer) * 0.1;
+				this.score += (this.max_duration - this.timer) * 0.025 + 50;
 				this.current_target++;
 				this.target_arrived = 0;
 				this.timer = 0;
@@ -159,8 +163,16 @@ export class Drone {
 	 * Calculates the distance to the current_target of the drone
 	 * @returns the distance to the current_target
 	 */
+	// get_distance_to_taget() {
+	// 	return Math.round(calculate_distance(this.targets[this.current_target], this.body.position));
+	// }
+
 	get_distance_to_taget() {
-		return Math.round(calculate_distance(this.targets[this.current_target], this.body.position));
+		const distance = Math.sqrt(
+			Math.pow(this.targets[this.current_target].y - this.body.position.y, 2) +
+				Math.pow(this.targets[this.current_target].x - this.body.position.x, 2)
+		);
+		return Math.round(distance);
 	}
 
 	/**

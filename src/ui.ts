@@ -1,5 +1,5 @@
 import { Chart, ChartData } from "chart.js";
-import { Generation } from "./evolution";
+import { Generation, Visual_State } from "./evolution";
 
 class UI_Manager {
 	// --- canvas ---
@@ -27,11 +27,25 @@ class UI_Manager {
 	private best_score_span = document.getElementById("best-score-span")! as HTMLSpanElement;
 	private chart!: Chart;
 
+	// -- controls --
+	private visual_state_button = document.getElementById("state-button")! as HTMLButtonElement;
+	visual_state: Visual_State = Visual_State.show_all;
+
+	private stop_button = document.getElementById("stop-button")! as HTMLButtonElement;
+	time_stop: Boolean = false;
+
 	constructor() {
-		window.onresize = this.resize_fix.bind(this);
+		// window.onresize = this.resize_fix.bind(this);
 		this.fix_resolution();
 
+		// changing speed will change variable
 		this.speed_callback = () => {};
+
+		// visual state = show_all | show_best
+		this.visual_state_button.onclick = this.toggle_visual_state.bind(this);
+
+		// toggles stop | play
+		this.stop_button.onclick = this.toggle_time.bind(this);
 	}
 
 	/**
@@ -58,7 +72,7 @@ class UI_Manager {
 	}
 
 	set best_score(score: number) {
-		this.best_score_span.textContent = score.toString();
+		this.best_score_span.textContent = score.toFixed(2);
 	}
 
 	set speed_callback(callback: Function) {
@@ -92,6 +106,38 @@ class UI_Manager {
 
 	get speed_reward() {
 		return +this.speed_reward_slider.value;
+	}
+
+	/**
+	 * Toggles between all the visual states and changes the button text
+	 */
+	toggle_visual_state() {
+		this.visual_state++;
+		if (this.visual_state == Object.values(Visual_State).length / 2) this.visual_state = 0;
+
+		switch (this.visual_state) {
+			case Visual_State.show_best:
+				this.visual_state_button.textContent = "Show best";
+				break;
+			case Visual_State.show_all:
+				this.visual_state_button.textContent = "Show all";
+		}
+	}
+
+	/**
+	 * Toggles between play and stop and changes the button text
+	 */
+	toggle_time() {
+		this.time_stop = !this.time_stop;
+
+		switch (this.time_stop) {
+			case false:
+				this.stop_button.textContent = "Stop";
+				break;
+			case true:
+				this.stop_button.textContent = "Play";
+				break;
+		}
 	}
 
 	/**

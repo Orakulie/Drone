@@ -16,6 +16,11 @@ export class Generation {
 	}
 }
 
+export enum Visual_State {
+	show_all,
+	show_best,
+}
+
 export class Evolution {
 	// amount of drones to spawn each generation
 	drone_amount!: number;
@@ -27,6 +32,8 @@ export class Evolution {
 	elite_count!: number;
 	// all previous generations
 	generations!: Generation[];
+	// highscore
+	highscore!: number;
 
 	constructor(drone_amount: number) {
 		this.drone_amount = drone_amount;
@@ -34,6 +41,7 @@ export class Evolution {
 		this.generations = [];
 		this.generation_count = 1;
 		this.elite_count = 0.1;
+		this.highscore = 0;
 
 		UI.drone_callback = () => {
 			this.drone_amount = UI.drone_count;
@@ -63,11 +71,14 @@ export class Evolution {
 
 	draw() {
 		UI.clear_canvas(UI.main_ctx);
-		this.drones.forEach((drone) => {
-			drone.draw();
-			// globals.ctx.fillStyle = "red";
-			// globals.ctx.fillRect(drone.targets[drone.current_target].x, drone.targets[drone.current_target].y, 10, 10);
-		});
+
+		// draw all drones or only the best one.
+		for (let i = 0; i < this.drones.length; i++) {
+			const drone = this.drones[i];
+			if (i == 0 || UI.visual_state == Visual_State.show_all) {
+				drone.draw();
+			}
+		}
 	}
 
 	/**
@@ -89,6 +100,10 @@ export class Evolution {
 			if (best_drone) {
 				const new_drone = new Drone(best_drone.brain.copy());
 				new_drones.push(new_drone);
+				if (best_drone.score > this.highscore) {
+					this.highscore = best_drone.score;
+					UI.best_score = this.highscore;
+				}
 			}
 		}
 

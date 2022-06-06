@@ -9,7 +9,6 @@ let evolution!: Evolution;
 function setup() {
 	// registers chart-js
 	Chart.register(...registerables);
-	console.log(UI.main_canvas.width);
 	// creates new evolution to start
 	evolution = new Evolution(UI.drone_count);
 	// start update loop
@@ -17,10 +16,12 @@ function setup() {
 }
 
 async function update() {
-	// calculate multiple iterations based on current speed
-	for (let i = 0; i < UI.speed; i++) {
-		await evolution.update();
-		Mat.update();
+	if (!UI.time_stop) {
+		// calculate multiple iterations based on current speed
+		for (let i = 0; i < UI.speed; i++) {
+			await evolution.update();
+			Mat.update();
+		}
 	}
 	window.requestAnimationFrame(update);
 }
