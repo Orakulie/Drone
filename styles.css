@@ -112,8 +112,16 @@ canvas{
     padding: 5px;
     background: none;
     border-color: #999;
+    border-width: 2px;
+    border-style: outset;
+    border-image: initial;
+    text-align: center;
     color: white;
     cursor: pointer;
+}
+
+input[type="file"]{
+    display: none;
 }
 
 .slider-wrapper{

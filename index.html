@@ -26,7 +26,7 @@
                     </div> -->
                     <!-- <button class="icon-button"><span class="material-icons">play_arrow</span></button> -->
                     <button class="menu-button" id="state-button">Show all</button>
-                    <button class="menu-button" id="stop-button">Stop</button>
+                    <button class="menu-button" id="stop-button">Play</button>
                     <button class="menu-button">Mouse</button>
                     <!-- <button class="menu-button">Export</button>
                     <button class="menu-button">Load</button> -->
@@ -72,8 +72,12 @@
                     <span id="best-score-span">-</span>
                 </div>
                 <div class="info-button-wrapper">
-                    <button class="info-button">Save</button>
-                    <button class="info-button">Load</button>
+                    <button class="info-button" id="save-button">Save</button>
+                    <!-- <button class="info-button" id="load-button">Load</button> -->
+                    <label class="info-button" for="load-input">
+                        <input id="load-input" type="file" multiple>
+                        Load
+                    </label>
                 </div>
             </div>
             <!-- <div class="drone_info_wrapper">

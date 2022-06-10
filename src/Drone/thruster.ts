@@ -29,6 +29,7 @@ export class Thruster {
 			{ isSensor: true }
 		);
 
+		Body.setAngle(this.body, -Math.PI);
 		// init variables
 		this.current_force = 0;
 		this.power = 0;
@@ -39,7 +40,7 @@ export class Thruster {
 	 * @param angle in radians
 	 */
 	set_angle(angle: number) {
-		Body.setAngle(this.body, angle);
+		Body.setAngle(this.body, this.drone.main_body.angle + angle);
 	}
 
 	/**
@@ -47,6 +48,7 @@ export class Thruster {
 	 * @param power between 0 and 1
 	 */
 	set_power(power: number) {
+		this.power = power;
 		this.current_force = power * this.force;
 	}
 
@@ -64,5 +66,14 @@ export class Thruster {
 
 	draw() {
 		draw_body(UI.main_ctx, this.body);
+		if(this.drone.is_destroyed) return;
+
+		const angle = this.body.angle + this.drone.body.angle + Math.PI;
+		const scale = Math.pow(1.6, this.power*9) + Math.random() * 10 + 10;
+		UI.main_ctx.translate(this.body.position.x, this.body.position.y);
+		UI.main_ctx.rotate(angle);
+		UI.main_ctx.drawImage(UI.flame_image, -scale / 2, 0, scale, scale);
+		UI.main_ctx.rotate(-angle);
+		UI.main_ctx.translate(-this.body.position.x, -this.body.position.y);
 	}
 }

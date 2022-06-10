@@ -32,7 +32,16 @@ class UI_Manager {
 	visual_state: Visual_State = Visual_State.show_all;
 
 	private stop_button = document.getElementById("stop-button")! as HTMLButtonElement;
-	time_stop: Boolean = false;
+	time_stop: Boolean = true;
+
+	// -- save & load --
+	private save_button = document.getElementById("save-button")! as HTMLButtonElement;
+	save_button_callback!: Function;
+	load_input = document.getElementById("load-input")! as HTMLInputElement;
+	load_input_callback!: Function;
+
+	// -- visuals --
+	flame_image = new Image();
 
 	constructor() {
 		// window.onresize = this.resize_fix.bind(this);
@@ -46,6 +55,8 @@ class UI_Manager {
 
 		// toggles stop | play
 		this.stop_button.onclick = this.toggle_time.bind(this);
+
+		this.flame_image.src = "./res/flame_v2.png";
 	}
 
 	/**
@@ -108,6 +119,18 @@ class UI_Manager {
 		return +this.speed_reward_slider.value;
 	}
 
+	set save_callback(callback: Function) {
+		this.save_button.onclick = () => {
+			callback();
+		};
+	}
+
+	set load_callback(callback: Function) {
+		this.load_input.onchange = () => {
+			callback();
+		};
+	}
+
 	/**
 	 * Toggles between all the visual states and changes the button text
 	 */
@@ -160,6 +183,10 @@ class UI_Manager {
 		this.chart.data.datasets[0].data.push(last_generation.fitness);
 		this.chart.data.datasets[1].data.push(last_generation.best_drone.score);
 		this.chart.update();
+	}
+	
+	reset_chart(){
+		this.chart.reset();
 	}
 
 	init_chart(generations: Generation[]) {

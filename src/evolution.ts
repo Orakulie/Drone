@@ -1,5 +1,8 @@
 import { Drone } from "./Drone/drone";
+import * as tf from "@tensorflow/tfjs";
 import { UI } from "./ui";
+import { Neural_Network } from "./Drone/neural_network";
+import { mod } from "@tensorflow/tfjs";
 
 export class Generation {
 	// total fitness of the generation
@@ -35,8 +38,8 @@ export class Evolution {
 	// highscore
 	highscore!: number;
 
-	constructor(drone_amount: number) {
-		this.drone_amount = drone_amount;
+	constructor() {
+		this.drone_amount = UI.drone_count;
 		this.drones = [];
 		this.generations = [];
 		this.generation_count = 1;
@@ -47,10 +50,56 @@ export class Evolution {
 			this.drone_amount = UI.drone_count;
 		};
 
+		UI.save_callback = this.save_best_drone.bind(this);
+		UI.load_callback = this.reset.bind(this);
+
 		// init all drones
-		for (let i = 0; i < drone_amount; i++) {
+		for (let i = 0; i < this.drone_amount; i++) {
 			const drone = new Drone();
 			this.drones.push(drone);
+		}
+	}
+
+	save_best_drone() {
+		this.drones[0].brain.model.save("downloads://drone");
+	}
+
+	async load_drone(files: FileList) {
+		const file_array = [...files];
+		if (file_array.length == 2) {
+			if (!file_array[0].name.includes("json")) {
+				const temp = file_array[0];
+				file_array[0] = file_array[1];
+				file_array[1] = temp;
+			}
+			const model = (await tf.loadLayersModel(tf.io.browserFiles(file_array))) as tf.Sequential;
+			const brain = new Neural_Network(model);
+			const drone = new Drone(brain);
+			return drone;
+		}
+
+		throw new Error("Invalid Files");
+	}
+
+	async reset() {
+		const files = UI.load_input.files;
+		if (!files) return;
+
+		this.generation_count = 1;
+		this.generations = [];
+		this.highscore = 0;
+		UI.generation = this.generation_count;
+		UI.best_score = 0;
+		UI.reset_chart();
+
+		const loaded_drone = await this.load_drone(files);
+		for (let i = 0; i < this.drone_amount; i++) {
+			this.drones[i].dispose();
+
+			let drone!: Drone;
+			if (i == 0) drone = loaded_drone;
+			else drone = this.breed(loaded_drone, loaded_drone);
+			this.drones[i] = drone;
 		}
 	}
 
@@ -92,7 +141,7 @@ export class Evolution {
 		const new_drones: Drone[] = [];
 
 		// amount of elites based on drone_amount and elite_count percentage
-		const elites = Math.floor(this.drone_amount * this.elite_count);
+		const elites = Math.max(Math.floor(this.drone_amount * this.elite_count), 1);
 
 		// best drones gets taken over the next generation
 		for (let i = 0; i < elites; i++) {

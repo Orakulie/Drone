@@ -133,7 +133,7 @@ export class Neural_Network {
 						// Mutation chance 20%
 						let w = values[j];
 						// not fully new values, instead adjust current value by a random value
-						values[j] = w + randomGaussian() * 0.5;
+						values[j] = w + randomGaussian() * 0.25;
 					}
 				}
 				let new_tens = tf.tensor(values, shape);

@@ -9,7 +9,7 @@ export class Drone {
 	// main_body size
 	size: number = 20;
 	// thruster power
-	thruster_power = 0.0004;
+	thruster_power = 0.0008;
 	// max amount of iterations before drone is supposed to reach target
 	max_duration: number = 1000;
 	// thrusters - 2 at the moment
@@ -23,7 +23,7 @@ export class Drone {
 		Vector.create(0.3, 0.7),
 		Vector.create(0.4, 0.6),
 		Vector.create(0.6, 0.3),
-		Vector.create(0.1, 0.9),
+		Vector.create(0.2, 0.8),
 		Vector.create(0.5, 0.5),
 	];
 	targets: Vector[] = [];
@@ -51,6 +51,7 @@ export class Drone {
 			this.size,
 			this.size
 		);
+		Body.setAngle(this.main_body, -Math.PI);
 
 		// create 2 thrusters which are left and right to the main body
 		this.thrusters.push(new Thruster(this, Vector.create(10, 10), this.thruster_power));
@@ -126,7 +127,7 @@ export class Drone {
 			if (this.target_arrived == 100) {
 				// add weighted score based on the time it took to reach the target
 				// TODO SPEED WEIGHT
-				this.score += (this.max_duration - this.timer) * 0.025 + 50;
+				this.score += (this.max_duration - this.timer) * 0.035 + 60;
 				this.current_target++;
 				this.target_arrived = 0;
 				this.timer = 0;
@@ -208,8 +209,8 @@ export class Drone {
 
 		// multiplying the angle output times 2*PI allows the drone to turn the thrusters by 360° in on step
 		// TODO might wanna change that
-		const left_angle = outputs[2] * 2 * Math.PI;
-		const right_angle = outputs[3] * 2 * Math.PI;
+		const left_angle = outputs[2] * 0.5 * Math.PI;
+		const right_angle = outputs[3] * 0.5 * Math.PI;
 
 		this.thrusters[0].set_angle(left_angle);
 		this.thrusters[1].set_angle(right_angle);
