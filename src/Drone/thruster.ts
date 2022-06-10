@@ -1,6 +1,5 @@
 import Matter, { Vector } from "matter-js";
 import { Bodies, Body } from "matter-js";
-import { UI } from "../ui";
 import { draw_body } from "../util";
 import { Drone } from "./drone";
 
@@ -38,7 +37,7 @@ export class Thruster {
 	/**
 	 *  Rotates the thruster to the given angle
 	 * @param angle in radians
-	 */
+j	 */
 	set_angle(angle: number) {
 		Body.setAngle(this.body, this.drone.main_body.angle + angle);
 	}
@@ -50,6 +49,8 @@ export class Thruster {
 	set_power(power: number) {
 		this.power = power;
 		this.current_force = power * this.force;
+
+		
 	}
 
 	/**
@@ -62,18 +63,5 @@ export class Thruster {
 	update() {
 		// apply current_force to the drone body
 		Body.applyForce(this.drone.body, this.body.position, this.get_force());
-	}
-
-	draw() {
-		draw_body(UI.main_ctx, this.body);
-		if(this.drone.is_destroyed) return;
-
-		const angle = this.body.angle + this.drone.body.angle + Math.PI;
-		const scale = Math.pow(1.6, this.power*9) + Math.random() * 10 + 10;
-		UI.main_ctx.translate(this.body.position.x, this.body.position.y);
-		UI.main_ctx.rotate(angle);
-		UI.main_ctx.drawImage(UI.flame_image, -scale / 2, 0, scale, scale);
-		UI.main_ctx.rotate(-angle);
-		UI.main_ctx.translate(-this.body.position.x, -this.body.position.y);
 	}
 }

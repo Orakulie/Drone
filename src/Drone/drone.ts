@@ -1,9 +1,8 @@
 import Matter, { Bodies, Body, Composite, Events, Vector } from "matter-js";
 import { Thruster } from "./thruster";
 import { Drone_Inputs, Neural_Network } from "./neural_network";
-import { calculate_distance, draw_body } from "../util";
-import { UI } from "../ui";
 import { Mat } from "../Matter/matter";
+import { Config } from "../config";
 
 export class Drone {
 	// main_body size
@@ -46,8 +45,8 @@ export class Drone {
 	constructor(brain: Neural_Network | null = null) {
 		// create main_body of drone
 		this.main_body = Bodies.rectangle(
-			Math.round(UI.main_canvas.width / 2),
-			Math.round(UI.main_canvas.height) - 400,
+			Math.round(Config.canvas.width / 2),
+			Math.round(Config.canvas.height) - 400,
 			this.size,
 			this.size
 		);
@@ -78,7 +77,7 @@ export class Drone {
 
 		this.percentage_targets.forEach((target) => {
 			this.targets.push(
-				Vector.create(Math.floor(UI.main_canvas.width * target.x), Math.floor(UI.main_canvas.height * target.y))
+				Vector.create(Math.floor(Config.canvas.width * target.x), Math.floor(Config.canvas.height * target.y))
 			);
 		});
 
@@ -91,15 +90,15 @@ export class Drone {
 	}
 
 	draw() {
-		// draws main body
-		draw_body(UI.main_ctx, this.main_body);
-		// draws current_target
-		if (!this.is_destroyed) {
-			UI.main_ctx.fillStyle = "red";
-			UI.main_ctx.fillRect(this.targets[this.current_target].x, this.targets[this.current_target].y, 10, 10);
-		}
-		// draws thrusters
-		this.thrusters.forEach((thruster) => thruster.draw());
+		// // draws main body
+		// draw_body(UI.main_ctx, this.main_body);
+		// // draws current_target
+		// if (!this.is_destroyed) {
+		// 	UI.main_ctx.fillStyle = "red";
+		// 	UI.main_ctx.fillRect(this.targets[this.current_target].x, this.targets[this.current_target].y, 10, 10);
+		// }
+		// // draws thrusters
+		// this.thrusters.forEach((thruster) => thruster.draw());
 	}
 
 	async update() {

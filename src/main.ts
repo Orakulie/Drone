@@ -1,29 +1,22 @@
-import { Chart, registerables } from "chart.js";
 import { Mat } from "./Matter/matter";
 import { Evolution } from "./evolution";
-import { UI } from "./ui";
+import * as tf from "@tensorflow/tfjs-node";
 
-// const dpi = window.devicePixelRatio;
 let evolution!: Evolution;
 
 function setup() {
-	// registers chart-js
-	Chart.register(...registerables);
+	tf.setBackend("cpu")
 	// creates new evolution to start
 	evolution = new Evolution();
 	// start update loop
-	window.requestAnimationFrame(update);
+	update();
 }
 
 async function update() {
-	if (!UI.time_stop) {
-		// calculate multiple iterations based on current speed
-		for (let i = 0; i < UI.speed; i++) {
-			await evolution.update();
-			Mat.update();
-		}
-	}
-	window.requestAnimationFrame(update);
+	// calculate multiple iterations based on current speed
+	await evolution.update();
+	Mat.update();
+	update();
 }
 
 setup();

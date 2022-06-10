@@ -1,5 +1,5 @@
 import Matter from "matter-js";
-import { UI } from "../ui";
+import { Config } from "../config";
 import { Boundary } from "./boundary";
 
 class Matter_Manager {
@@ -25,8 +25,8 @@ export const Mat = new Matter_Manager();
 
 // create walls on the canvas border
 Mat.boundaries = [
-	new Boundary(UI.main_canvas.width / 2, UI.main_canvas.height + 10, UI.main_canvas.width * 4, 20),
-	new Boundary(UI.main_canvas.width / 2, -10, UI.main_canvas.width, 20),
-	new Boundary(-10, UI.main_canvas.height / 2, 20, UI.main_canvas.height),
-	new Boundary(UI.main_canvas.width + 10, UI.main_canvas.height / 2, 20, UI.main_canvas.height),
+	new Boundary(Config.canvas.width / 2, Config.canvas.height + 10, Config.canvas.width * 4, 20),
+	new Boundary(Config.canvas.width / 2, -10, Config.canvas.width, 20),
+	new Boundary(-10, Config.canvas.height / 2, 20, Config.canvas.height),
+	new Boundary(Config.canvas.width + 10, Config.canvas.height / 2, 20, Config.canvas.height),
 ];

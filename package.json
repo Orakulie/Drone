@@ -2,10 +2,10 @@
   "name": "drone",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./src/main.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack --watch",
+    "dev": "nodemon ./src/main.ts",
     "build": "webpack"
   },
   "author": "",
@@ -19,7 +19,7 @@
     "webpack-cli": "^4.9.2"
   },
   "dependencies": {
-    "@tensorflow/tfjs": "^3.17.0",
+    "@tensorflow/tfjs-node": "^3.18.0",
     "chart.js": "^3.7.1",
     "matter-js": "^0.18.0"
   }

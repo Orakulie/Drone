@@ -1,9 +1,10 @@
-import * as tf from "@tensorflow/tfjs";
-import { Sequential, TensorContainer } from "@tensorflow/tfjs";
+import * as tf from "@tensorflow/tfjs-node";
+import { Sequential, TensorContainer } from "@tensorflow/tfjs-node";
 import { Vector } from "matter-js";
-import { UI } from "../ui";
+import { Config } from "../config";
 import { randomGaussian } from "../util";
 
+console.log(tf.version);
 export interface Drone_Inputs {
 	velocity: Vector;
 	angular_velocity: number;
@@ -16,15 +17,13 @@ export class Neural_Network {
 	model!: Sequential;
 	constructor(model: Sequential | null = null) {
 		// if called with an already exisiting model (for copying) -> take it over
+
 		if (model) {
 			this.model = model;
 		} else {
 			// otherwise generate a new neural network
 			this.model = Neural_Network.create_network();
 		}
-
-		// gpu seems slower
-		tf.setBackend("cpu");
 	}
 
 	/**
@@ -156,8 +155,8 @@ export class Neural_Network {
 				inputs.velocity.x / 100,
 				inputs.velocity.y / 100,
 				inputs.angular_velocity / 2,
-				inputs.target_vector.x / UI.main_canvas.width,
-				inputs.target_vector.y / UI.main_canvas.height,
+				inputs.target_vector.x / Config.canvas.width,
+				inputs.target_vector.y / Config.canvas.height,
 				Math.sin(inputs.angle),
 			],
 		]);

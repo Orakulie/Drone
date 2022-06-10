@@ -1,8 +1,7 @@
 import { Drone } from "./Drone/drone";
-import * as tf from "@tensorflow/tfjs";
-import { UI } from "./ui";
+import * as tf from "@tensorflow/tfjs-node";
 import { Neural_Network } from "./Drone/neural_network";
-import { mod } from "@tensorflow/tfjs";
+import { Config } from "./config";
 
 export class Generation {
 	// total fitness of the generation
@@ -39,19 +38,12 @@ export class Evolution {
 	highscore!: number;
 
 	constructor() {
-		this.drone_amount = UI.drone_count;
+		this.drone_amount = Config.drone_amount;
 		this.drones = [];
 		this.generations = [];
 		this.generation_count = 1;
 		this.elite_count = 0.1;
 		this.highscore = 0;
-
-		UI.drone_callback = () => {
-			this.drone_amount = UI.drone_count;
-		};
-
-		UI.save_callback = this.save_best_drone.bind(this);
-		UI.load_callback = this.reset.bind(this);
 
 		// init all drones
 		for (let i = 0; i < this.drone_amount; i++) {
@@ -82,25 +74,22 @@ export class Evolution {
 	}
 
 	async reset() {
-		const files = UI.load_input.files;
-		if (!files) return;
-
-		this.generation_count = 1;
-		this.generations = [];
-		this.highscore = 0;
-		UI.generation = this.generation_count;
-		UI.best_score = 0;
-		UI.reset_chart();
-
-		const loaded_drone = await this.load_drone(files);
-		for (let i = 0; i < this.drone_amount; i++) {
-			this.drones[i].dispose();
-
-			let drone!: Drone;
-			if (i == 0) drone = loaded_drone;
-			else drone = this.breed(loaded_drone, loaded_drone);
-			this.drones[i] = drone;
-		}
+		// const files = UI.load_input.files;
+		// if (!files) return;
+		// this.generation_count = 1;
+		// this.generations = [];
+		// this.highscore = 0;
+		// UI.generation = this.generation_count;
+		// UI.best_score = 0;
+		// UI.reset_chart();
+		// const loaded_drone = await this.load_drone(files);
+		// for (let i = 0; i < this.drone_amount; i++) {
+		// 	this.drones[i].dispose();
+		// 	let drone!: Drone;
+		// 	if (i == 0) drone = loaded_drone;
+		// 	else drone = this.breed(loaded_drone, loaded_drone);
+		// 	this.drones[i] = drone;
+		// }
 	}
 
 	async update() {
@@ -119,15 +108,14 @@ export class Evolution {
 	}
 
 	draw() {
-		UI.clear_canvas(UI.main_ctx);
-
-		// draw all drones or only the best one.
-		for (let i = 0; i < this.drones.length; i++) {
-			const drone = this.drones[i];
-			if (i == 0 || UI.visual_state == Visual_State.show_all) {
-				drone.draw();
-			}
-		}
+		// UI.clear_canvas(UI.main_ctx);
+		// // draw all drones or only the best one.
+		// for (let i = 0; i < this.drones.length; i++) {
+		// 	const drone = this.drones[i];
+		// 	if (i == 0 || UI.visual_state == Visual_State.show_all) {
+		// 		drone.draw();
+		// 	}
+		// }
 	}
 
 	/**
@@ -151,7 +139,7 @@ export class Evolution {
 				new_drones.push(new_drone);
 				if (best_drone.score > this.highscore) {
 					this.highscore = best_drone.score;
-					UI.best_score = this.highscore;
+					// UI.best_score = this.highscore;
 				}
 			}
 		}
@@ -166,7 +154,7 @@ export class Evolution {
 		this.generations.push(new Generation(this.generation_count, generation_fitness, this.drones[0].copy()));
 
 		// update chart
-		UI.update_chart(this.generations);
+		// UI.update_chart(this.generations);
 
 		// dispose all old drones
 		this.drones.forEach((drone) => {
@@ -176,7 +164,7 @@ export class Evolution {
 		// set new drones
 		this.drones = new_drones;
 		this.generation_count++;
-		UI.generation = this.generation_count;
+		// UI.generation = this.generation_count;
 	}
 
 	/**
