@@ -22,6 +22,7 @@ async function update() {
 			await evolution.update();
 			Mat.update();
 		}
+		evolution.draw();
 	}
 	window.requestAnimationFrame(update);
 }

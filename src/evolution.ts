@@ -115,7 +115,6 @@ export class Evolution {
 			await drone.update();
 		}
 
-		this.draw();
 	}
 
 	draw() {

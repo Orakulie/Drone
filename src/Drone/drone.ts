@@ -127,7 +127,7 @@ export class Drone {
 			if (this.target_arrived == 100) {
 				// add weighted score based on the time it took to reach the target
 				// TODO SPEED WEIGHT
-				this.score += (this.max_duration - this.timer) * 0.035 + 60;
+				this.score += (this.max_duration - this.timer) * 0.1 + 60;
 				this.current_target++;
 				this.target_arrived = 0;
 				this.timer = 0;

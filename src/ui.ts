@@ -184,9 +184,9 @@ class UI_Manager {
 		this.chart.data.datasets[1].data.push(last_generation.best_drone.score);
 		this.chart.update();
 	}
-	
-	reset_chart(){
-		this.chart.reset();
+
+	reset_chart() {
+		if (this.chart) this.chart.reset();
 	}
 
 	init_chart(generations: Generation[]) {
