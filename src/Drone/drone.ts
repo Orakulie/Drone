@@ -11,7 +11,7 @@ export class Drone {
 	// thruster power
 	thruster_power = 0.0008;
 	// max amount of iterations before drone is supposed to reach target
-	max_duration: number = 1000;
+	max_duration: number = 600;
 	// thrusters - 2 at the moment
 	thrusters: Thruster[] = [];
 	brain!: Neural_Network;
@@ -20,11 +20,14 @@ export class Drone {
 	// drone targets
 	percentage_targets = [
 		Vector.create(0.5, 0.5),
-		Vector.create(0.3, 0.7),
-		Vector.create(0.4, 0.6),
-		Vector.create(0.6, 0.3),
+		Vector.create(0.3, 0.6),
+		Vector.create(0.5, 0.8),
+		Vector.create(0.3, 0.4),
 		Vector.create(0.2, 0.8),
 		Vector.create(0.5, 0.5),
+		Vector.create(0.8, 0.2),
+		Vector.create(0.8, 0.8),
+		Vector.create(0.2, 0.2),
 	];
 	targets: Vector[] = [];
 	// current target that the drone is supposed to reach
@@ -75,6 +78,7 @@ export class Drone {
 		this.timer = 0;
 		this.target_arrived = 0;
 		this.target_arrived_total = 0;
+		if (UI.mouse_state) this.max_duration = 100000;
 
 		this.percentage_targets.forEach((target) => {
 			this.targets.push(
@@ -96,7 +100,7 @@ export class Drone {
 		// draws current_target
 		if (!this.is_destroyed) {
 			UI.main_ctx.fillStyle = "red";
-			UI.main_ctx.fillRect(this.targets[this.current_target].x, this.targets[this.current_target].y, 10, 10);
+			UI.main_ctx.fillRect(this.target.x - 5, this.target.y - 5, 10, 10);
 		}
 		// draws thrusters
 		this.thrusters.forEach((thruster) => thruster.draw());
@@ -127,7 +131,7 @@ export class Drone {
 			if (this.target_arrived == 100) {
 				// add weighted score based on the time it took to reach the target
 				// TODO SPEED WEIGHT
-				this.score += (this.max_duration - this.timer) * 0.1 + 60;
+				this.score += (this.max_duration - this.timer) * 0.1 + 200;
 				this.current_target++;
 				this.target_arrived = 0;
 				this.timer = 0;
@@ -165,22 +169,27 @@ export class Drone {
 	 * @returns the distance to the current_target
 	 */
 	// get_distance_to_taget() {
-	// 	return Math.round(calculate_distance(this.targets[this.current_target], this.body.position));
+	// 	return Math.round(calculate_distance(this.target, this.body.position));
 	// }
 
 	get_distance_to_taget() {
 		const distance = Math.sqrt(
-			Math.pow(this.targets[this.current_target].y - this.body.position.y, 2) +
-				Math.pow(this.targets[this.current_target].x - this.body.position.x, 2)
+			Math.pow(this.target.y - this.body.position.y, 2) + Math.pow(this.target.x - this.body.position.x, 2)
 		);
 		return Math.round(distance);
+	}
+
+	get target() {
+		if (UI.mouse_state) return Mat.mouse.position;
+
+		return this.targets[this.current_target];
 	}
 
 	/**
 	 * Returns the vector between the drone and the current_target
 	 */
 	get target_vector() {
-		return Vector.sub(this.targets[this.current_target], this.body.position);
+		return Vector.sub(this.target, this.body.position);
 	}
 
 	/**
@@ -227,6 +236,13 @@ export class Drone {
 		delete this.thrusters[0];
 		delete this.thrusters[1];
 		this.brain.dispose();
+	}
+
+	freeze() {
+		Composite.remove(Mat.engine.world, this.body, true);
+	}
+	unfreeze() {
+		Composite.add(Mat.engine.world, this.body);
 	}
 
 	/**

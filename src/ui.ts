@@ -34,6 +34,13 @@ class UI_Manager {
 	private stop_button = document.getElementById("stop-button")! as HTMLButtonElement;
 	time_stop: Boolean = true;
 
+	private mouse_button = document.getElementById("mouse-button")! as HTMLButtonElement;
+	mouse_state: Boolean = false;
+
+	private toggle_menu_button = document.getElementById("toggle-menu-button")! as HTMLButtonElement;
+	private menu_div = document.getElementById("menu")! as HTMLDivElement;
+	menu_state: Boolean = true;
+
 	// -- save & load --
 	private save_button = document.getElementById("save-button")! as HTMLButtonElement;
 	save_button_callback!: Function;
@@ -55,6 +62,8 @@ class UI_Manager {
 
 		// toggles stop | play
 		this.stop_button.onclick = this.toggle_time.bind(this);
+		this.mouse_button.onclick = this.toggle_mouse_state.bind(this);
+		this.toggle_menu_button.onclick = this.toggle_menu.bind(this);
 
 		this.flame_image.src = "./res/flame_v2.png";
 	}
@@ -140,10 +149,10 @@ class UI_Manager {
 
 		switch (this.visual_state) {
 			case Visual_State.show_best:
-				this.visual_state_button.textContent = "Show best";
+				this.visual_state_button.textContent = "Show all";
 				break;
 			case Visual_State.show_all:
-				this.visual_state_button.textContent = "Show all";
+				this.visual_state_button.textContent = "Show best";
 		}
 	}
 
@@ -153,14 +162,23 @@ class UI_Manager {
 	toggle_time() {
 		this.time_stop = !this.time_stop;
 
-		switch (this.time_stop) {
-			case false:
-				this.stop_button.textContent = "Stop";
-				break;
-			case true:
-				this.stop_button.textContent = "Play";
-				break;
+		this.stop_button.textContent = this.time_stop ? "Play" : "Stop";
+	}
+
+	toggle_menu() {
+		this.menu_state = !this.menu_state;
+		if (!this.menu_state) {
+			this.menu_div.style.display = "None";
+			this.toggle_menu_button.style.transform = "rotate(180deg)";
+		} else {
+			this.menu_div.style.display = "Block";
+			this.toggle_menu_button.style.transform = "rotate(0)";
 		}
+	}
+
+	toggle_mouse_state() {
+		this.mouse_state = !this.mouse_state;
+		this.mouse_button.textContent = this.mouse_state ? "Train" : "Mouse";
 	}
 
 	/**

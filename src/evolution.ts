@@ -29,6 +29,8 @@ export class Evolution {
 	drone_amount!: number;
 	// list of all drones in the current generation
 	drones!: Drone[];
+	// save training drones if user switches to mouse_mode
+	training_drones!: Drone[];
 	// generation counter
 	generation_count!: number;
 	// amount of elites in %, that are taken over to next generation
@@ -41,6 +43,7 @@ export class Evolution {
 	constructor() {
 		this.drone_amount = UI.drone_count;
 		this.drones = [];
+		this.training_drones = [];
 		this.generations = [];
 		this.generation_count = 1;
 		this.elite_count = 0.1;
@@ -103,7 +106,23 @@ export class Evolution {
 		}
 	}
 
+	/**
+	 * Updates every drone and checks whether the current generation is finished or not.
+	 * Used for training
+	 */
 	async update() {
+		if (UI.mouse_state && this.drones.length > 1) {
+			this.training_drones = this.drones;
+			this.training_drones.forEach((d) => d.freeze());
+			const new_drone = new Drone(this.drones[0].brain.copy());
+			this.drones = [new_drone];
+		} else if (!UI.mouse_state && this.training_drones.length > 0) {
+			this.drones[0].dispose();
+			this.drones = this.training_drones;
+			this.drones.forEach((d) => d.unfreeze());
+			this.training_drones = [];
+		}
+
 		// if all drones are destroyed -> next generation
 		if (this.drones.every((drone) => drone.is_destroyed)) {
 			this.init_next_generation();
@@ -114,7 +133,6 @@ export class Evolution {
 			const drone = this.drones[i];
 			await drone.update();
 		}
-
 	}
 
 	draw() {
@@ -133,6 +151,12 @@ export class Evolution {
 	 * Initialize next generation by taking and breeding the good drones to create the drones for the new generation
 	 */
 	init_next_generation() {
+		if (UI.mouse_state) {
+			const new_drone = new Drone(this.drones[0].brain.copy());
+			this.drones[0].dispose();
+			this.drones = [new_drone];
+			return;
+		}
 		// normalize scores and sort based on it
 		const generation_fitness = this.evaluate_generation();
 

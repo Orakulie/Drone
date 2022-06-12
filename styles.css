@@ -132,3 +132,7 @@ input[type="file"]{
 .title{
     font-size: 1.1rem;
 }
+
+#toggle-menu-button{
+    transition: all 100ms;
+}

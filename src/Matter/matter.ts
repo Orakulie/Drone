@@ -7,9 +7,13 @@ class Matter_Manager {
 	engine!: Matter.Engine;
 	// list of all walls
 	boundaries!: Boundary[];
+	// Mouse tracker for the main canvas
+	mouse!: Matter.Mouse;	
+	
 
 	constructor() {
 		this.engine = Matter.Engine.create();
+		this.mouse = Matter.Mouse.create(UI.main_canvas);
 	}
 
 	add_boundary(boundary: Boundary) {
