@@ -20,6 +20,13 @@ body{
     grid-template-columns: 4fr 1.5fr;
 }
 
+.main-wrapper{
+    height: 100%;
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
 @media screen and (max-width:900px){
     .wrapper{
         grid-template-columns: 1fr;

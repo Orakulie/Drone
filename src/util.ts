@@ -1,27 +1,4 @@
-// export class Vector {
-// 	x: number = 0;
-// 	y: number = 0;
-// 	constructor(x: number, y: number) {
-// 		this.x = x;
-// 		this.y = y;
-// 	}
-
 import { Body, Vector } from "matter-js";
-
-// 	add(vector: Vector) {
-// 		const new_vector = new Vector(this.x, this.y);
-// 		new_vector.x += vector.x;
-// 		new_vector.y += vector.y;
-// 		return new_vector;
-// 	}
-
-// 	times(x: number) {
-// 		const new_vector = new Vector(this.x, this.y);
-// 		new_vector.x *= x;
-// 		new_vector.y *= x;
-// 		return new_vector;
-// 	}
-// }
 
 export function lerp(a: number, b: number, percentage: number) {
 	return (1 - percentage) * a + percentage * b;
@@ -63,7 +40,6 @@ export function draw_body(ctx: CanvasRenderingContext2D, body: Body) {
 
 export function sleep(milliseconds: number) {
 	return new Promise((resolve) => {
-		
 		setTimeout(resolve, milliseconds);
 	});
 }

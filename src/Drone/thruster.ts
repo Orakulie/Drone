@@ -1,6 +1,6 @@
 import Matter, { Vector } from "matter-js";
 import { Bodies, Body } from "matter-js";
-import { UI } from "../ui";
+import { UI } from "../Trainer/ui";
 import { draw_body } from "../util";
 import { Drone } from "./drone";
 

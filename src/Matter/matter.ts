@@ -1,5 +1,5 @@
 import Matter from "matter-js";
-import { UI } from "../ui";
+import { UI } from "../Trainer/ui";
 import { Boundary } from "./boundary";
 
 class Matter_Manager {

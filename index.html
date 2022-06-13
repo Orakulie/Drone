@@ -11,90 +11,13 @@
 </head>
 
 <body>
-    <div class="wrapper">
+    <div class="main-wrapper">
         <div class="canvas-wrapper">
             <canvas id="main-canvas"></canvas>
-            <div class="absolute-ui">
-                <div class="content" id="menu">
-                    <!-- <div class="show-option-wrapper">
-                        <label for="show-option">Show</label>
-                        <select id="show-option">
-                            <option value="best">best</option>
-                            <option value="all">all</option>
-                            <option value="highlighted">highlighted</option>
-                        </select>
-                    </div> -->
-                    <!-- <button class="icon-button"><span class="material-icons">play_arrow</span></button> -->
-                    <button class="menu-button" id="state-button">Show best</button>
-                    <button class="menu-button" id="stop-button">Play</button>
-                    <button class="menu-button" id="mouse-button">Mouse</button>
-                    <!-- <button class="menu-button">Export</button>
-                    <button class="menu-button">Load</button> -->
-                </div>
-                <button class="icon-button" id="toggle-menu-button"><span class="material-icons">expand_more</span></button>
-            </div>
-        </div>
-        <div class="ui">
-            <div class="general">
-                <span class="title">Options</span>
-                <hr class="solid">
-                <div class="element-wrapper">
-                    <span>Speed</span>
-                    <div class="slider-wrapper">
-                        <input id="time-slider" type="range" min="1" max="10" value="1" step="1">
-                        <label id="time-label">1</label>
-                    </div>
-                </div>
-                <div class="element-wrapper">
-                    <span>Drone count</span>
-                    <div class="slider-wrapper">
-                        <input id="count-slider" type="range" min="1" max="1000" value="300" step="1">
-                        <label id="count-label">200</label>
-                    </div>
-                </div>
-                <div class="element-wrapper">
-                    <span>Speed reward</span>
-                    <div class="slider-wrapper">
-                        <input id="reward-slider" type="range" min="1" max="10" value="1" step="1">
-                        <label id="reward-label">1</label>
-                    </div>
-                </div>
 
-                <hr class="solid">
-                <span class="title">Info</span>
-                <hr class="solid">
-                <div class="info-wrapper">
-                    <span>Generation:</span>
-                    <span id="generation-span">1</span>
-                </div>
-                <div class="info-wrapper">
-                    <span>Best score:</span>
-                    <span id="best-score-span">-</span>
-                </div>
-                <div class="info-button-wrapper">
-                    <button class="info-button" id="save-button">Save</button>
-                    <!-- <button class="info-button" id="load-button">Load</button> -->
-                    <label class="info-button" for="load-input">
-                        <input id="load-input" type="file" multiple>
-                        Load
-                    </label>
-                </div>
-            </div>
-            <!-- <div class="drone_info_wrapper">
-                <canvas id="info_canvas" width="200" height="250"></canvas>
-            </div> -->
-            <div class="canvas-wrapper">
-                <canvas id="chart-canvas">
-            </div>
-
-            <!-- <div class="chart_canvas_wrapper"> -->
         </div>
-        <!-- </div> -->
     </div>
-    <!--  <script type="module" src='./dist/main.js'></script>
-    <script type="module" src='./dist/drone.js'></script> -->
-
-    <script src="./dist/bundle.js"></script>
+    <script src="./dist/main.js"></script>
 </body>
 
 </html>

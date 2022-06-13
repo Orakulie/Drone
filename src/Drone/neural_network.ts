@@ -1,7 +1,7 @@
 import * as tf from "@tensorflow/tfjs";
 import { Sequential, TensorContainer } from "@tensorflow/tfjs";
 import { Vector } from "matter-js";
-import { UI } from "../ui";
+import { UI } from "../Trainer/ui";
 import { randomGaussian } from "../util";
 
 export interface Drone_Inputs {

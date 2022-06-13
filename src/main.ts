@@ -1,30 +1,24 @@
-import { Chart, registerables } from "chart.js";
-import { Mat } from "./Matter/matter";
-import { Evolution } from "./evolution";
-import { UI } from "./ui";
+import { convert_ascii } from "./ASCII/converter";
 
-// const dpi = window.devicePixelRatio;
-let evolution!: Evolution;
+const canvas = document.getElementById("main-canvas")! as HTMLCanvasElement;
+const ctx = canvas.getContext("2d")!;
 
-function setup() {
-	// registers chart-js
-	Chart.register(...registerables);
-	// creates new evolution to start
-	evolution = new Evolution();
-	// start update loop
-	window.requestAnimationFrame(update);
-}
+canvas.setAttribute("height", "" + canvas.parentElement!.clientHeight);
+canvas.setAttribute("width", "" + canvas.parentElement!.clientWidth);
 
-async function update() {
-	if (!UI.time_stop) {
-		// calculate multiple iterations based on current speed
-		for (let i = 0; i < UI.speed; i++) {
-			await evolution.update();
-			Mat.update();
+console.log(convert_ascii("A"));
+
+const size = 30;
+const word = "Drone";
+ctx.translate((canvas.width - (5*word.length * size))/2, canvas.height / 2 - 4 * size);
+for (let i = 0; i < word.length; i++) {
+	const letter = convert_ascii(word[i]);
+
+	for (let x = 0; x < 6; x++) {
+		for (let y = 0; y < 8; y++) {
+			if (letter[x][y]) {
+				ctx.fillRect(x * size + i * 160, y * size, size, size);
+			}
 		}
 	}
-	evolution.draw();
-	window.requestAnimationFrame(update);
 }
-
-setup();

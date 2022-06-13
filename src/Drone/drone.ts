@@ -2,7 +2,7 @@ import Matter, { Bodies, Body, Composite, Events, Vector } from "matter-js";
 import { Thruster } from "./thruster";
 import { Drone_Inputs, Neural_Network } from "./neural_network";
 import { calculate_distance, draw_body } from "../util";
-import { UI } from "../ui";
+import { UI } from "../Trainer/ui";
 import { Mat } from "../Matter/matter";
 
 export class Drone {

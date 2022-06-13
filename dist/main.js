@@ -1,33 +1,106 @@
-import Matter from "matter-js";
-import { Drone } from "./drone";
-// var Engine = Matter.Engine,
-// 	Bodies = Matter.Bodies,
-// 	Composite = Matter.Composite;
-const dpi = window.devicePixelRatio;
-let player;
-let engine;
-function setup() {
-    globals.canvas = document.getElementById("canvas");
-    ctx = canvas.getContext("2d");
-    fix_dpi();
-    engine = Matter.Engine.create();
-    player = new Drone();
-    window.requestAnimationFrame(update);
-}
-function update() {
-    // player.update();
-    draw();
-    Matter.Engine.update(engine, 1000 / 60);
-    window.requestAnimationFrame(update);
-}
-function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    player.draw();
-}
-function fix_dpi() {
-    const height = +getComputedStyle(canvas).getPropertyValue("height").slice(0, -2);
-    const width = +getComputedStyle(canvas).getPropertyValue("width").slice(0, -2);
-    canvas.setAttribute("height", "" + height * dpi);
-    canvas.setAttribute("width", "" + width * dpi);
-}
-setup();
+/*
+ * ATTENTION: The "eval" devtool has been used (maybe by default in mode: "development").
+ * This devtool is neither made for production nor for readable output files.
+ * It uses "eval()" calls to create a separate source file in the browser devtools.
+ * If you are trying to read the output file, select a different devtool (https://webpack.js.org/configuration/devtool/)
+ * or disable the default devtool with "devtool: false".
+ * If you are looking for production-ready output files, see mode: "production" (https://webpack.js.org/configuration/mode/).
+ */
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+/******/ 	var __webpack_modules__ = ({
+
+/***/ "./src/ASCII/ASCII_table.ts":
+/*!**********************************!*\
+  !*** ./src/ASCII/ASCII_table.ts ***!
+  \**********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"ascii\": () => (/* binding */ ascii)\n/* harmony export */ });\nconst ascii = {\r\n    \" \": [0x00, 0x00, 0x00, 0x00, 0x00, 0x00],\r\n    \"!\": [0x00, 0x00, 0x5f, 0x00, 0x00, 0x00],\r\n    '\"': [0x00, 0x07, 0x00, 0x07, 0x00, 0x00],\r\n    \"#\": [0x14, 0x7f, 0x14, 0x7f, 0x14, 0x00],\r\n    $: [0x24, 0x2a, 0x7f, 0x2a, 0x12, 0x00],\r\n    \"%\": [0x23, 0x13, 0x08, 0x64, 0x62, 0x00],\r\n    \"&\": [0x36, 0x49, 0x55, 0x22, 0x50, 0x00],\r\n    \"'\": [0x00, 0x00, 0x07, 0x00, 0x00, 0x00],\r\n    \"(\": [0x00, 0x1c, 0x22, 0x41, 0x00, 0x00],\r\n    \")\": [0x00, 0x41, 0x22, 0x1c, 0x00, 0x00],\r\n    \"*\": [0x0a, 0x04, 0x1f, 0x04, 0x0a, 0x00],\r\n    \"+\": [0x08, 0x08, 0x3e, 0x08, 0x08, 0x00],\r\n    \",\": [0x00, 0x50, 0x30, 0x00, 0x00, 0x00],\r\n    \"-\": [0x08, 0x08, 0x08, 0x08, 0x08, 0x00],\r\n    \".\": [0x00, 0x60, 0x60, 0x00, 0x00, 0x00],\r\n    \"/\": [0x20, 0x10, 0x08, 0x04, 0x02, 0x00],\r\n    \"0\": [0x3e, 0x51, 0x49, 0x45, 0x3e, 0x00],\r\n    \"1\": [0x00, 0x42, 0x7f, 0x40, 0x00, 0x00],\r\n    \"2\": [0x42, 0x61, 0x51, 0x49, 0x46, 0x00],\r\n    \"3\": [0x21, 0x41, 0x45, 0x4b, 0x31, 0x00],\r\n    \"4\": [0x18, 0x14, 0x12, 0x7f, 0x10, 0x00],\r\n    \"5\": [0x27, 0x45, 0x45, 0x45, 0x39, 0x00],\r\n    \"6\": [0x3c, 0x4a, 0x49, 0x49, 0x30, 0x00],\r\n    \"7\": [0x03, 0x71, 0x09, 0x05, 0x03, 0x00],\r\n    \"8\": [0x36, 0x49, 0x49, 0x49, 0x36, 0x00],\r\n    \"9\": [0x06, 0x49, 0x49, 0x29, 0x1e, 0x00],\r\n    \":\": [0x00, 0x36, 0x36, 0x00, 0x00, 0x00],\r\n    \";\": [0x00, 0x56, 0x36, 0x00, 0x00, 0x00],\r\n    \"<\": [0x08, 0x14, 0x22, 0x41, 0x00, 0x00],\r\n    \"=\": [0x14, 0x14, 0x14, 0x14, 0x14, 0x00],\r\n    \">\": [0x00, 0x41, 0x22, 0x14, 0x08, 0x00],\r\n    \"?\": [0x02, 0x01, 0x51, 0x09, 0x06, 0x00],\r\n    \"@\": [0x32, 0x49, 0x79, 0x41, 0x3e, 0x00],\r\n    A: [0x7e, 0x11, 0x11, 0x11, 0x7e, 0x00],\r\n    B: [0x7f, 0x49, 0x49, 0x49, 0x36, 0x00],\r\n    C: [0x3e, 0x41, 0x41, 0x41, 0x22, 0x00],\r\n    D: [0x7f, 0x41, 0x41, 0x41, 0x3e, 0x00],\r\n    E: [0x7f, 0x49, 0x49, 0x49, 0x41, 0x00],\r\n    F: [0x7f, 0x09, 0x09, 0x09, 0x01, 0x00],\r\n    G: [0x3e, 0x41, 0x41, 0x49, 0x7a, 0x00],\r\n    H: [0x7f, 0x08, 0x08, 0x08, 0x7f, 0x00],\r\n    I: [0x00, 0x41, 0x7f, 0x41, 0x00, 0x00],\r\n    J: [0x20, 0x40, 0x41, 0x3f, 0x01, 0x00],\r\n    K: [0x7f, 0x08, 0x14, 0x22, 0x41, 0x00],\r\n    L: [0x7f, 0x40, 0x40, 0x40, 0x40, 0x00],\r\n    M: [0x7f, 0x02, 0x0c, 0x02, 0x7f, 0x00],\r\n    N: [0x7f, 0x04, 0x08, 0x10, 0x7f, 0x00],\r\n    O: [0x3e, 0x41, 0x41, 0x41, 0x3e, 0x00],\r\n    P: [0x7f, 0x09, 0x09, 0x09, 0x06, 0x00],\r\n    Q: [0x3e, 0x41, 0x51, 0x21, 0x5e, 0x00],\r\n    R: [0x7f, 0x09, 0x19, 0x29, 0x46, 0x00],\r\n    S: [0x26, 0x49, 0x49, 0x49, 0x32, 0x00],\r\n    T: [0x01, 0x01, 0x7f, 0x01, 0x01, 0x00],\r\n    U: [0x3f, 0x40, 0x40, 0x40, 0x3f, 0x00],\r\n    V: [0x1f, 0x20, 0x40, 0x20, 0x1f, 0x00],\r\n    W: [0x3f, 0x40, 0x38, 0x40, 0x3f, 0x00],\r\n    X: [0x63, 0x14, 0x08, 0x14, 0x63, 0x00],\r\n    Y: [0x07, 0x08, 0x70, 0x08, 0x07, 0x00],\r\n    Z: [0x61, 0x51, 0x49, 0x45, 0x43, 0x00],\r\n    \"[\": [0x00, 0x7f, 0x41, 0x41, 0x00, 0x00],\r\n    \"\\\\\": [0x02, 0x04, 0x08, 0x10, 0x20, 0x00],\r\n    \"]\": [0x00, 0x41, 0x41, 0x7f, 0x00, 0x00],\r\n    \"^\": [0x04, 0x02, 0x01, 0x02, 0x04, 0x00],\r\n    _: [0x40, 0x40, 0x40, 0x40, 0x40, 0x00],\r\n    \"`\": [0x00, 0x01, 0x02, 0x04, 0x00, 0x00],\r\n    a: [0x20, 0x54, 0x54, 0x54, 0x78, 0x00],\r\n    b: [0x7f, 0x48, 0x44, 0x44, 0x38, 0x00],\r\n    c: [0x38, 0x44, 0x44, 0x44, 0x20, 0x00],\r\n    d: [0x38, 0x44, 0x44, 0x48, 0x7f, 0x00],\r\n    e: [0x38, 0x54, 0x54, 0x54, 0x18, 0x00],\r\n    f: [0x08, 0x7e, 0x09, 0x01, 0x02, 0x00],\r\n    g: [0x08, 0x54, 0x54, 0x54, 0x3c, 0x00],\r\n    h: [0x7f, 0x08, 0x04, 0x04, 0x78, 0x00],\r\n    i: [0x00, 0x48, 0x7d, 0x40, 0x00, 0x00],\r\n    j: [0x20, 0x40, 0x44, 0x3d, 0x00, 0x00],\r\n    k: [0x7f, 0x10, 0x28, 0x44, 0x00, 0x00],\r\n    l: [0x00, 0x41, 0x7f, 0x40, 0x00, 0x00],\r\n    m: [0x7c, 0x04, 0x78, 0x04, 0x78, 0x00],\r\n    n: [0x7c, 0x08, 0x04, 0x04, 0x78, 0x00],\r\n    o: [0x38, 0x44, 0x44, 0x44, 0x38, 0x00],\r\n    p: [0x7c, 0x14, 0x14, 0x14, 0x08, 0x00],\r\n    q: [0x08, 0x14, 0x14, 0x18, 0x7c, 0x00],\r\n    r: [0x7c, 0x08, 0x04, 0x04, 0x08, 0x00],\r\n    s: [0x48, 0x54, 0x54, 0x54, 0x20, 0x00],\r\n    t: [0x04, 0x3f, 0x44, 0x40, 0x20, 0x00],\r\n    u: [0x3c, 0x40, 0x40, 0x20, 0x7c, 0x00],\r\n    v: [0x1c, 0x20, 0x40, 0x20, 0x1c, 0x00],\r\n    w: [0x3c, 0x40, 0x30, 0x40, 0x3c, 0x00],\r\n    x: [0x44, 0x28, 0x10, 0x28, 0x44, 0x00],\r\n    y: [0x0c, 0x50, 0x50, 0x50, 0x3c, 0x00],\r\n    z: [0x44, 0x64, 0x54, 0x4c, 0x44, 0x00],\r\n    \"{\": [0x00, 0x08, 0x36, 0x41, 0x00, 0x00],\r\n    \"|\": [0x00, 0x00, 0x7f, 0x00, 0x00, 0x00],\r\n    \"}\": [0x00, 0x41, 0x36, 0x08, 0x00, 0x00],\r\n    \"~\": [0x10, 0x08, 0x08, 0x10, 0x08, 0x00],\r\n};\r\n\n\n//# sourceURL=webpack://drone/./src/ASCII/ASCII_table.ts?");
+
+/***/ }),
+
+/***/ "./src/ASCII/converter.ts":
+/*!********************************!*\
+  !*** ./src/ASCII/converter.ts ***!
+  \********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"convert_ascii\": () => (/* binding */ convert_ascii)\n/* harmony export */ });\n/* harmony import */ var _ASCII_table__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ASCII_table */ \"./src/ASCII/ASCII_table.ts\");\n\r\nfunction hex_to_string(hex) {\r\n    return hex.toString(16);\r\n}\r\nfunction hex_string_to_binary_string(hex) {\r\n    return (\"00000000\" + parseInt(hex, 16).toString(2)).substr(-8);\r\n}\r\nfunction convert_ascii(char) {\r\n    if (char in _ASCII_table__WEBPACK_IMPORTED_MODULE_0__.ascii) {\r\n        const hex_array = _ASCII_table__WEBPACK_IMPORTED_MODULE_0__.ascii[char];\r\n        const binaries = [];\r\n        for (let i = 0; i < hex_array.length; i++) {\r\n            const hex = hex_array[i];\r\n            const hex_string = hex_to_string(hex);\r\n            const binary_string = hex_string_to_binary_string(hex_string)\r\n                .split(\"\")\r\n                .reverse()\r\n                .map((i) => i == \"1\");\r\n            binaries.push(binary_string);\r\n        }\r\n        return binaries;\r\n    }\r\n    throw new Error(`Invalid char: ${char}`);\r\n}\r\n\n\n//# sourceURL=webpack://drone/./src/ASCII/converter.ts?");
+
+/***/ }),
+
+/***/ "./src/main.ts":
+/*!*********************!*\
+  !*** ./src/main.ts ***!
+  \*********************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _ASCII_converter__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ASCII/converter */ \"./src/ASCII/converter.ts\");\n\r\nconst canvas = document.getElementById(\"main-canvas\");\r\nconst ctx = canvas.getContext(\"2d\");\r\ncanvas.setAttribute(\"height\", \"\" + canvas.parentElement.clientHeight);\r\ncanvas.setAttribute(\"width\", \"\" + canvas.parentElement.clientWidth);\r\nconsole.log((0,_ASCII_converter__WEBPACK_IMPORTED_MODULE_0__.convert_ascii)(\"A\"));\r\nconst size = 30;\r\nconst word = \"Drone\";\r\nctx.translate((canvas.width - (5 * word.length * size)) / 2, canvas.height / 2 - 4 * size);\r\nfor (let i = 0; i < word.length; i++) {\r\n    const letter = (0,_ASCII_converter__WEBPACK_IMPORTED_MODULE_0__.convert_ascii)(word[i]);\r\n    for (let x = 0; x < 6; x++) {\r\n        for (let y = 0; y < 8; y++) {\r\n            if (letter[x][y]) {\r\n                ctx.fillRect(x * size + i * 160, y * size, size, size);\r\n            }\r\n        }\r\n    }\r\n}\r\n\n\n//# sourceURL=webpack://drone/./src/main.ts?");
+
+/***/ })
+
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/************************************************************************/
+/******/ 	
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module can't be inlined because the eval devtool is used.
+/******/ 	var __webpack_exports__ = __webpack_require__("./src/main.ts");
+/******/ 	
+/******/ })()
+;
