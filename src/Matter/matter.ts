@@ -8,12 +8,13 @@ class Matter_Manager {
 	// list of all walls
 	boundaries!: Boundary[];
 	// Mouse tracker for the main canvas
-	mouse!: Matter.Mouse;	
-	
+	mouse!: Matter.Mouse;
+
+	canvas!: HTMLCanvasElement;
+	ctx!: CanvasRenderingContext2D;
 
 	constructor() {
 		this.engine = Matter.Engine.create();
-		this.mouse = Matter.Mouse.create(UI.main_canvas);
 	}
 
 	add_boundary(boundary: Boundary) {
@@ -23,14 +24,22 @@ class Matter_Manager {
 	update() {
 		Matter.Engine.update(this.engine);
 	}
+	set_canvas(canvas: HTMLCanvasElement) {
+		this.canvas = canvas;
+		this.ctx = canvas.getContext("2d")!;
+		this.set_mouse(canvas);
+		// create walls on the canvas border
+		this.boundaries = [
+			new Boundary(Mat.canvas.width / 2, Mat.canvas.height + 10, Mat.canvas.width * 4, 20),
+			new Boundary(Mat.canvas.width / 2, -10, Mat.canvas.width, 20),
+			new Boundary(-10, Mat.canvas.height / 2, 20, Mat.canvas.height),
+			new Boundary(Mat.canvas.width + 10, Mat.canvas.height / 2, 20, Mat.canvas.height),
+		];
+	}
+
+	set_mouse(canvas: HTMLCanvasElement) {
+		this.mouse = Matter.Mouse.create(canvas);
+	}
 }
 
 export const Mat = new Matter_Manager();
-
-// create walls on the canvas border
-Mat.boundaries = [
-	new Boundary(UI.main_canvas.width / 2, UI.main_canvas.height + 10, UI.main_canvas.width * 4, 20),
-	new Boundary(UI.main_canvas.width / 2, -10, UI.main_canvas.width, 20),
-	new Boundary(-10, UI.main_canvas.height / 2, 20, UI.main_canvas.height),
-	new Boundary(UI.main_canvas.width + 10, UI.main_canvas.height / 2, 20, UI.main_canvas.height),
-];

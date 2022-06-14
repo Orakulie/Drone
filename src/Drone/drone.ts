@@ -2,7 +2,6 @@ import Matter, { Bodies, Body, Composite, Events, Vector } from "matter-js";
 import { Thruster } from "./thruster";
 import { Drone_Inputs, Neural_Network } from "./neural_network";
 import { calculate_distance, draw_body } from "../util";
-import { UI } from "../Trainer/ui";
 import { Mat } from "../Matter/matter";
 
 export class Drone {
@@ -32,6 +31,8 @@ export class Drone {
 	targets: Vector[] = [];
 	// current target that the drone is supposed to reach
 	current_target = 0;
+	mouse_mode: Boolean = false;
+	manual_target: Vector | null = null;
 	// counter for standing on top of target
 	target_arrived!: number;
 	target_arrived_total!: number;
@@ -49,8 +50,8 @@ export class Drone {
 	constructor(brain: Neural_Network | null = null) {
 		// create main_body of drone
 		this.main_body = Bodies.rectangle(
-			Math.round(UI.main_canvas.width / 2),
-			Math.round(UI.main_canvas.height) - 400,
+			Math.round(Mat.canvas.width / 2),
+			Math.round(Mat.canvas.height) - 400,
 			this.size,
 			this.size
 		);
@@ -78,11 +79,11 @@ export class Drone {
 		this.timer = 0;
 		this.target_arrived = 0;
 		this.target_arrived_total = 0;
-		if (UI.mouse_state) this.max_duration = 100000;
+		if (this.mouse_mode) this.max_duration = 100000;
 
 		this.percentage_targets.forEach((target) => {
 			this.targets.push(
-				Vector.create(Math.floor(UI.main_canvas.width * target.x), Math.floor(UI.main_canvas.height * target.y))
+				Vector.create(Math.floor(Mat.canvas.width * target.x), Math.floor(Mat.canvas.height * target.y))
 			);
 		});
 
@@ -96,14 +97,19 @@ export class Drone {
 
 	draw() {
 		// draws main body
-		draw_body(UI.main_ctx, this.main_body);
+		draw_body(Mat.ctx, this.main_body);
 		// draws current_target
-		if (!this.is_destroyed) {
-			UI.main_ctx.fillStyle = "red";
-			UI.main_ctx.fillRect(this.target.x - 5, this.target.y - 5, 10, 10);
+		if (!this.is_destroyed && !this.manual_target) {
+			Mat.ctx.fillStyle = "red";
+			Mat.ctx.fillRect(this.target.x - 5, this.target.y - 5, 10, 10);
 		}
 		// draws thrusters
 		this.thrusters.forEach((thruster) => thruster.draw());
+	}
+
+	set_mouse_mode(bool: Boolean) {
+		this.mouse_mode = bool;
+		this.max_duration = 100000;
 	}
 
 	async update() {
@@ -125,7 +131,7 @@ export class Drone {
 		this.score += Math.pow(distance_score, 1);
 
 		// check if the drone reached the current_target
-		if (this.get_distance_to_taget() <= 20) {
+		if (this.get_distance_to_taget() <= 20 && !this.mouse_mode) {
 			this.target_arrived++;
 			// if the drone stayed 100 ticks on top of the current_target -> next target
 			if (this.target_arrived == 100) {
@@ -137,7 +143,7 @@ export class Drone {
 				this.timer = 0;
 
 				// if last target has been reached -> destroy drone
-				if (this.current_target == this.targets.length) {
+				if (this.current_target == this.targets.length && !this.mouse_mode) {
 					this.current_target = 0;
 					this.is_destroyed = true;
 				}
@@ -179,8 +185,14 @@ export class Drone {
 		return Math.round(distance);
 	}
 
+	set_target(position: Vector) {
+		this.set_mouse_mode(true);
+		this.manual_target = position;
+	}
+
 	get target() {
-		if (UI.mouse_state) return Mat.mouse.position;
+		if (this.manual_target) return this.manual_target;
+		if (this.mouse_mode) return Mat.mouse.position;
 
 		return this.targets[this.current_target];
 	}

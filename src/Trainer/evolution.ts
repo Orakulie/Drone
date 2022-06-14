@@ -1,6 +1,6 @@
 import { Drone } from "../Drone/drone";
 import * as tf from "@tensorflow/tfjs";
-import { UI } from "./ui";
+import { UI, Visual_State } from "./ui";
 import { Neural_Network } from "../Drone/neural_network";
 
 export class Generation {
@@ -16,11 +16,6 @@ export class Generation {
 		this.fitness = fitness;
 		this.best_drone = best_drone;
 	}
-}
-
-export enum Visual_State {
-	show_all,
-	show_best,
 }
 
 export class Evolution {
@@ -106,7 +101,8 @@ export class Evolution {
 	}
 
 	/**
-	 * Updates every drone and checks whether the current generation is finished or not.
+Der Befehl "is.mouse_mode" ist entweder falsch geschrieben oder
+konnte nicht gefunden werden.
 	 * Used for training
 	 */
 	async update() {
@@ -114,6 +110,7 @@ export class Evolution {
 			this.training_drones = this.drones;
 			this.training_drones.forEach((d) => d.freeze());
 			const new_drone = new Drone(this.drones[0].brain.copy());
+			new_drone.set_mouse_mode(true);
 			this.drones = [new_drone];
 		} else if (!UI.mouse_state && this.training_drones.length > 0) {
 			this.drones[0].dispose();
@@ -152,6 +149,7 @@ export class Evolution {
 	init_next_generation() {
 		if (UI.mouse_state) {
 			const new_drone = new Drone(this.drones[0].brain.copy());
+			new_drone.set_mouse_mode(true);
 			this.drones[0].dispose();
 			this.drones = [new_drone];
 			return;

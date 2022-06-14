@@ -9,8 +9,11 @@ let evolution!: Evolution;
 function setup() {
 	// registers chart-js
 	Chart.register(...registerables);
+	// setting canvas
+	Mat.set_canvas(UI.main_canvas);
 	// creates new evolution to start
 	evolution = new Evolution();
+
 	// start update loop
 	window.requestAnimationFrame(update);
 }

@@ -1,6 +1,10 @@
 import { Chart, ChartData } from "chart.js";
-import { Generation, Visual_State } from "./evolution";
+import { Generation } from "./evolution";
 
+export enum Visual_State {
+	show_all,
+	show_best,
+}
 class UI_Manager {
 	// --- canvas ---
 	main_canvas = document.getElementById("main-canvas")! as HTMLCanvasElement;
@@ -47,9 +51,6 @@ class UI_Manager {
 	load_input = document.getElementById("load-input")! as HTMLInputElement;
 	load_input_callback!: Function;
 
-	// -- visuals --
-	flame_image = new Image();
-
 	constructor() {
 		// window.onresize = this.resize_fix.bind(this);
 		this.fix_resolution();
@@ -64,8 +65,6 @@ class UI_Manager {
 		this.stop_button.onclick = this.toggle_time.bind(this);
 		this.mouse_button.onclick = this.toggle_mouse_state.bind(this);
 		this.toggle_menu_button.onclick = this.toggle_menu.bind(this);
-
-		this.flame_image.src = "./res/flame_v2.png";
 	}
 
 	/**

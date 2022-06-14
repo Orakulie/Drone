@@ -1,7 +1,7 @@
 import * as tf from "@tensorflow/tfjs";
 import { Sequential, TensorContainer } from "@tensorflow/tfjs";
 import { Vector } from "matter-js";
-import { UI } from "../Trainer/ui";
+import { Mat } from "../Matter/matter";
 import { randomGaussian } from "../util";
 
 export interface Drone_Inputs {
@@ -156,8 +156,8 @@ export class Neural_Network {
 				inputs.velocity.x / 100,
 				inputs.velocity.y / 100,
 				inputs.angular_velocity / 2,
-				inputs.target_vector.x / UI.main_canvas.width,
-				inputs.target_vector.y / UI.main_canvas.height,
+				inputs.target_vector.x / Mat.canvas.width,
+				inputs.target_vector.y / Mat.canvas.height,
 				Math.sin(inputs.angle),
 			],
 		]);
