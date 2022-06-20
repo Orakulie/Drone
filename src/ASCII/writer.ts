@@ -77,7 +77,7 @@ export class Writer {
      * @returns pretrained drone neural network
      */
     async load_drone_brain() {
-        const model = (await tf.loadLayersModel("/Drone/res/trained_drone/drone.json")) as tf.Sequential;
+        const model = (await tf.loadLayersModel("/res/trained_drone/drone.json")) as tf.Sequential;
         const brain = new Neural_Network(model);
         return brain;
     }
@@ -125,7 +125,7 @@ export class Writer {
             this.hover_progress++
 
             if (this.hover_progress == 100) {
-                window.location.href = "/Drone/trainer.html"
+                window.location.href = "/trainer.html"
             }
         } else {
             this.hover_progress = 0;
