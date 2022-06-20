@@ -125,7 +125,7 @@ export class Writer {
             this.hover_progress++
 
             if (this.hover_progress == 100) {
-                window.location.href = "/trainer.html"
+                window.location.href = "/Drone/trainer.html"
             }
         } else {
             this.hover_progress = 0;
