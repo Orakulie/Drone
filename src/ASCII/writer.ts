@@ -4,7 +4,6 @@ import { convert_ascii } from "./converter";
 import { Neural_Network } from "../Drone/neural_network";
 import { Drone } from "../Drone/drone";
 import { calculate_distance } from "../util";
-import { Mat } from "../Matter/matter";
 
 export class Writer {
     // current displayed word
@@ -26,7 +25,7 @@ export class Writer {
     mouse_drone!: Drone;
 
     // input field used for changing the text
-    input_field!: HTMLInputElement;
+    input_field = document.getElementById("input-field") as HTMLInputElement;
 
     // timer that is used to wait for a certain time before updating the current word
     input_timer!: NodeJS.Timeout;
@@ -34,30 +33,31 @@ export class Writer {
     // drone brain that is used to create each drone. Pretrained & Loaded
     drone_brain!: Neural_Network;
 
-    circle_timer: number = 0;
-
+    // two html divs that appear when user scroll into them
     element_1 = document.getElementById("element-1") as HTMLElement;
     element_2 = document.getElementById("element-2") as HTMLElement;;
 
-
-
+    // hover progress. 100 means -> redirect
     _hover_progress: number = 0;
+
+    // hover area
     hover_field = document.getElementById("hover-progress") as HTMLElement;
+
+    // position of the hover field on the canvas
     hover_position!: Vector
 
 
-    constructor(canvas: HTMLCanvasElement, starting_word: String) {
+    constructor(canvas: HTMLCanvasElement) {
         this.canvas = canvas;
         this.ctx = canvas.getContext("2d")!;
 
+        // setting the hover_field position on the canvas matching the html element
         this.hover_position = Vector.create(canvas.width / 2, canvas.height / 2 + 132);
 
         // allows document scrolling above canvas
         this.canvas.onwheel = () => { };
 
-
-        this.input_field = document.getElementById("input-field") as HTMLInputElement;
-
+        // on input change -> set_word
         this.input_field.onchange = this.input_change.bind(this);
         this.input_field.onkeyup = this.input_change.bind(this);
         this.input_field.onpaste = this.input_change.bind(this);
@@ -65,10 +65,11 @@ export class Writer {
         // load pretrained drone and set the starting word afterwards
         this.load_drone_brain().then((brain) => {
             this.drone_brain = brain;
-            // this.set_word(starting_word);
             // bind document scroll event for dynamic words
             document.onscroll = this.scroll.bind(this);
+            // "scroll" once to set the starting position
             this.scroll();
+            // start the drone that follow the mouse
             this.init_mouse_drone();
         });
     }
@@ -82,24 +83,29 @@ export class Writer {
         return brain;
     }
 
+    /**
+     * Checks whether the user reached the top or the bottom and displays the matching text
+     * */
     scroll() {
-        if (this.scroll_percentage >= 0.9) {
+        if (this.scroll_percentage >= 0.9) { // bottom of the page
             this.set_word("try it");
             this.element_1.style.display = "none";
             this.element_2.style.display = "flex";
-        } else if (this.scroll_percentage <= 0.1) {
+        } else if (this.scroll_percentage <= 0.1) { // top of the page
             this.set_word("Drones");
             this.element_2.style.display = "none";
             this.element_1.style.display = "flex";
         }
         else {
-            // this._word = "";
-            this.set_word("Ö")
+            this.set_word("Ö") // display arrow
             this.element_2.style.display = "none";
             this.element_1.style.display = "none";
         }
     }
 
+    /**
+     *  Returns the current scrol_top in percent
+     * */
     get scroll_percentage() {
         if (!document.scrollingElement) return 1;
         return document.scrollingElement.scrollTop / document.scrollingElement.clientHeight;
@@ -109,32 +115,26 @@ export class Writer {
      * Updates every drone
      */
     async update() {
-        if (this.word == "") {
-
-            for (let i = 0; i < this.drones.length; i++) {
-                this.drones[i].set_target(this.get_circle_postion(i, this.circle_timer));
-            }
-            this.circle_timer += 0.01;
-        }
-
-
-
+        // update the drone that follows the drone
         await this.mouse_drone.update();
+
+        // calculate the distance between mouse_drone and the hover_field
         const distance = (calculate_distance(this.mouse_drone.body.position, this.hover_position));
+
+        // if drone is inside the hover_field -> increase hover_progress
         if (distance <= 20) {
 
             if (this.hover_progress < 100) {
                 this.hover_progress++
-            } else {
+            } else { // if hover_progress reached 100 -> redirect to trainer.html
                 this.hover_progress = 0;
-                setTimeout(function () { window.location.href = "/trainer.html" }
-                    , 0);
+                window.location.href = "/trainer.html"
             }
-        } else {
+        } else { // reset hover_progress if the drone leaves the hover_field
             this.hover_progress = 0;
         }
 
-
+        // if mouse_drone is destroyed -> respawn it
         if (this.mouse_drone.is_destroyed) {
             this.mouse_drone.destroy();
             this.destroyed_drones.push(this.mouse_drone);
@@ -143,8 +143,10 @@ export class Writer {
         // filter out all disposed drones
         this.destroyed_drones = this.destroyed_drones.filter(d => !d.is_disposed);
 
-        // destroy drone if it hits a boundary
+        // list of all drones that hit a boundary in this update
         const to_be_removed: number[] = [];
+
+        // update all drones
         for (let i = 0; i < this.drones.length; i++) {
             const drone = this.drones[i];
             await drone.update();
@@ -153,6 +155,7 @@ export class Writer {
             }
         }
 
+        // destroy & remove destroyed drones from the array
         this.drones = this.drones.filter((drone) => {
             if (to_be_removed.includes(drone.brain.model.id)) {
                 drone.destroy();
@@ -163,27 +166,19 @@ export class Writer {
         });
     }
 
-    get_circle_postion(index: number, i: number) {
-        // const x = index * 3 * Math.cos(i + index) + Math.floor(this.canvas.width / 2);
-        // const y = index * 2 * Math.sin(i + index) + Math.floor(this.canvas.height / 2);
-        const x = Math.floor(index % 15) * 50 + Math.floor(this.canvas.width / 2);
-        const y = Math.floor(index / 15) * 50 + Math.floor(this.canvas.height / 2);
-        return Vector.create(x, y);
-    }
 
     /**
      * Draws every drone
      */
     draw() {
-        this.mouse_drone.draw();
-        this.drones.forEach((drone) => {
-            drone.draw();
-        });
-        this.destroyed_drones.forEach((drone) => {
+        [this.mouse_drone, ...this.drones, ...this.destroyed_drones].forEach((drone) => {
             drone.draw();
         })
     }
 
+    /**
+     *  Creates a drone that follows the mouse
+     * */
     init_mouse_drone() {
         this.mouse_drone = new Drone(this.drone_brain.copy());
         this.mouse_drone.set_mouse_mode(true);
@@ -200,22 +195,13 @@ export class Writer {
         }, 500);
     }
 
-    /**
-     * Disposes all drones
-     */
-    dispose_drones() {
-        this.drones.forEach((drone) => {
-            drone.dispose();
-        });
-        this.drones = [];
-    }
 
     get word() {
         return this._word;
     }
 
     /**
-     *	Sets the new word and spawns/destroys drones accordingly
+     * Sets the new word and spawns/destroys drones accordingly
      * @param new_word new word to be set
      */
     async set_word(new_word: String) {
@@ -245,34 +231,29 @@ export class Writer {
             }
         }
 
-        // check if drones need to be added
-        // if (positions.length > this.drones.length) {
-        //     for (let i = this.drones.length; i < positions.length; i++) {
-        //         this.drones.push(new Drone(this.drone_brain.copy()));
-        //     }
-        //     // check if drones need to be removed
-        // } else if (positions.length < this.drones.length) {
-        //     for (let i = positions.length; i < this.drones.length; i++) {
-        //         this.drones[i].destroy();
-        //         this.destroyed_drones.push(this.drones[i]);
-        //     }
-        //     this.drones.splice(positions.length, this.drones.length - positions.length);
-        // }
 
         const new_drones: Drone[] = [];
+
         // give each drone the new target (pixel)
         for (let i = 0; i < positions.length; i++) {
-            // const drone = this.drones[i];
+            // filter drones that dont have a new target
             const drones = this.drones.filter(d => !new_drones.includes(d));
+
+            // does the new word require new drones?
             const can_spawn = this.drones.length < positions.length;
+
+            // get closest drone, if nothing is found -> create new drone
             let drone = this.get_closest_drone(drones, positions[i], can_spawn);
             if (!drone) {
                 drone = new Drone(this.drone_brain.copy())
             }
+
+            // add new drone and set the new target
             new_drones.push(drone);
             drone.set_target(positions[i]);
         }
 
+        // destroy all unused drones
         for (let i = 0; i < this.drones.length; i++) {
             if (!new_drones.includes(this.drones[i])) {
                 this.drones[i].destroy();
@@ -280,7 +261,6 @@ export class Writer {
             }
         }
         this.drones = new_drones;
-
     }
 
     /**
@@ -291,10 +271,14 @@ export class Writer {
 
         let closest_drone: Drone | null = null;
         let shortest_distance = Infinity;
+
         for (let i = 0; i < drones.length; i++) {
             const drone = drones[i];
+
             const distance = calculate_distance(drone.body.position, position);
             const spawn_distance = calculate_distance(Drone.spawn_point, position);
+
+            // checks if the drone has a shorter way to the target than a new drone from the spawn
             if (distance < shortest_distance && !can_spawn || (distance < spawn_distance && distance < shortest_distance && can_spawn)) {
                 closest_drone = drone;
                 shortest_distance = distance;

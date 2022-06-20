@@ -12,7 +12,7 @@ function setup() {
     // setting canvas
     Mat.set_canvas(canvas);
     // setting starting word to 'Drone'
-    writer = new Writer(canvas, "Drones");
+    writer = new Writer(canvas);
     // start update loop
     window.requestAnimationFrame(update);
 }
