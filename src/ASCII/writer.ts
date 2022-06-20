@@ -77,7 +77,7 @@ export class Writer {
      * @returns pretrained drone neural network
      */
     async load_drone_brain() {
-        const model = (await tf.loadLayersModel("/res/trained_drone/drone.json")) as tf.Sequential;
+        const model = (await tf.loadLayersModel("/Drone/res/trained_drone/drone.json")) as tf.Sequential;
         const brain = new Neural_Network(model);
         return brain;
     }
