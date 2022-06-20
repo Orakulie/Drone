@@ -122,10 +122,13 @@ export class Writer {
         await this.mouse_drone.update();
         const distance = (calculate_distance(this.mouse_drone.body.position, this.hover_position));
         if (distance <= 20) {
-            this.hover_progress++
 
-            if (this.hover_progress == 100) {
-                window.location.href = "/trainer.html"
+            if (this.hover_progress < 100) {
+                this.hover_progress++
+            } else {
+                this.hover_progress = 0;
+                setTimeout(function () { window.location.href = "/trainer.html" }
+                    , 0);
             }
         } else {
             this.hover_progress = 0;

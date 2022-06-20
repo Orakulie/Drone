@@ -161,6 +161,16 @@ canvas{
     cursor: pointer;
     padding: unset;
 }
+.back-button-wrapper{
+    position: absolute;
+    z-index: 2;
+    top: 15px;
+    left: 15px;
+}
+#back-button{
+    color:white;
+    position: absolute;
+}
 .icon-button > span{
     font-size: 1.4rem;
 }
