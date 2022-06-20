@@ -42,22 +42,15 @@ class Matter_Manager {
 
     set_mouse(canvas: HTMLCanvasElement) {
         this.mouse = Matter.Mouse.create(canvas);
+        // allows document scrolling above canvas
+        this.mouse.element.removeEventListener("mousewheel", (this.mouse as any).mousewheel);
+        this.mouse.element.removeEventListener("DOMMouseScroll", (this.mouse as any).mousewheel);
     }
 
     get random_positon() {
         const rando_x = Math.random();
         const rando_y = Math.random();
         let x, y;
-        // if (rando_x < 0.5) {
-        //     x = random(10, 35) * 0.01 * this.canvas.width;
-        // } else {
-        //     x = random(65, 90) * 0.01 * this.canvas.width;
-        // }
-        // if (rando_y < 0.5) {
-        //     y = random(10, 25) * 0.01 * this.canvas.height;
-        // } else {
-        //     y = random(75, 90) * 0.01 * this.canvas.height;
-        // }
         x = rando_x * this.canvas.width;
         y = rando_y * this.canvas.height;
 

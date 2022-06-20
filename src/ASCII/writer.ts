@@ -54,9 +54,6 @@ export class Writer {
         // setting the hover_field position on the canvas matching the html element
         this.hover_position = Vector.create(canvas.width / 2, canvas.height / 2 + 132);
 
-        // allows document scrolling above canvas
-        this.canvas.onwheel = () => { };
-
         // on input change -> set_word
         this.input_field.onchange = this.input_change.bind(this);
         this.input_field.onkeyup = this.input_change.bind(this);
