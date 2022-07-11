@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack --watch",
     "build": "webpack",
-    "host":"ts-node ./src/server.ts"
+    "host": "ts-node ./src/server.ts"
   },
   "author": "",
   "license": "ISC",
@@ -15,7 +15,6 @@
     "@types/express": "^4.17.13",
     "@types/matter-js": "^0.17.7",
     "express": "^4.18.1",
-    "nodemon": "^2.0.16",
     "ts-loader": "^9.3.0",
     "ts-node": "^10.7.0",
     "typescript": "^4.6.4",
