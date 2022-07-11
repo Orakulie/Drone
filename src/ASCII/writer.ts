@@ -75,7 +75,7 @@ export class Writer {
      * @returns pretrained drone neural network
      */
     async load_drone_brain() {
-        const model = (await tf.loadLayersModel("/Drone/res/trained_drone/drone.json")) as tf.Sequential;
+        const model = (await tf.loadLayersModel("/clever-drones/res/trained_drone/drone.json")) as tf.Sequential;
         const brain = new Neural_Network(model);
         return brain;
     }
@@ -125,7 +125,7 @@ export class Writer {
                 this.hover_progress++
             } else { // if hover_progress reached 100 -> redirect to trainer.html
                 this.hover_progress = 0;
-                window.location.href = "/Drone/trainer.html"
+                window.location.href = "/clever-drones/trainer.html"
             }
         } else { // reset hover_progress if the drone leaves the hover_field
             this.hover_progress = 0;
