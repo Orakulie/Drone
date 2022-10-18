@@ -1,7 +1,7 @@
 # Teaching a drone how to fly
 After seeing the epic [project](https://github.com/johnBuffer/AutoDrone) of [John Buffer](https://github.com/johnBuffer), I decided to give it a shot myself to create something similar.
 
-My version is written in typescript, you are able to directly try it in your [browser](https://sch-28.github.io/Drone/). 
+My version is written in typescript, you are able to directly try it in your [browser](https://sch-28.github.io/clever-drones/). 
 
 ## Approach
 The training consists of 9 targets. For each target, each drone has a **set time to reach** it.
